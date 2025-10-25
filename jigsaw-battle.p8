@@ -313,9 +313,19 @@ function draw_row()
 		local sx = 44 + x*cell_size
 		local sy = 105
 		rect(sx, sy, sx + cell_size,sy+cell_size,5)
-		--render_jigsaw_at(jigsaw, x, 3)
+		end
+end
+
+function row_now_jigsaws()
+	for x=0,row_w-1 do
+		local sx = 44 + x*cell_size
+		local sy = 105
+		local jigsaw = create_random_jigsaw()
+		
+		render_jigsaw_at(row[x], x, 0)
 	end
 end
+		
 
 
 -->8
