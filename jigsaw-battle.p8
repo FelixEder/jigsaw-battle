@@ -266,6 +266,7 @@ function game_draw()
 	draw_next_piece()
 	draw_grid()
 	draw_row()
+	row_now_jigsaws()
 	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
 	rect(44 + selection_cursor * 16, 105, 60 + selection_cursor * 16, 121, 3)
 
@@ -322,7 +323,7 @@ function row_now_jigsaws()
 		local sy = 105
 		local jigsaw = create_random_jigsaw()
 		
-		render_jigsaw_at(row[x], x, 0)
+		render_jigsaw_at(jigsaw, 44 + x*cell_size, 105, true)
 	end
 end
 		
