@@ -180,6 +180,7 @@ end
 function game_init()
 		--todo set all game state
   create_grid()
+  create_row()
   --todo set p1 selection row
   grid_cursor = {
     x = 2,
@@ -234,6 +235,7 @@ end
 function game_draw()
 	cls()
 	draw_grid()
+	draw_row()
 	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
 	rect(30 + selection_cursor * 16, 100, 46 + selection_cursor * 16, 116, 3)
 
@@ -264,6 +266,28 @@ function printc(txt, y, c)
 	c = c or 6
 	print(txt, 64 - #txt*2, y, c)
 end
+-->8
+--selection row
+row_w = 3
+
+selection_row = {}
+
+function create_row() 
+	for x=0,row_w-1 do
+		selection_row[x] = nil
+	end
+end
+
+function draw_row() 
+	for x=0,row_w-1 do
+		local sx = 44 + x*cell_size
+		local sy = 100 
+		rect(sx, sy, sx + cell_size,sy+cell_size,5)
+		--render_jigsaw_at(jigsaw, x, 3)
+	end
+end
+
+
 __gfx__
 00000000000000000099900000000000000009aa000009aa00000000000000000000000000000000000000000000000000000000000000000000000000000000
 099999000009999909aaa90000000000000009aa000009aa00000000000000000000000000000000000000000000000000000000000000000000000000000000
