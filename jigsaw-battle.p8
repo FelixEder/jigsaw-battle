@@ -204,6 +204,7 @@ function game_init()
   create_grid()
   create_row()
   --todo set p1 selection row
+  next_piece = nil
   grid_cursor = {
     x = 2,
     y = 2,
