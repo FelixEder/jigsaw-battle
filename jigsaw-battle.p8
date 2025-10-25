@@ -32,11 +32,12 @@ end
 -- 0 = straight
 -- 1 = knob
 function create_random_jigsaw()
+	--todo balance the randomness
 	return {
-		top = 1,
-		left = 0,
-		right = -1,
-		bottom = 1,
+		top = flr(rnd(3)) - 1,
+		left = flr(rnd(3)) - 1,
+		right = flr(rnd(3)) - 1,
+		bottom = flr(rnd(3)) - 1,
 		}
 end
 
@@ -136,7 +137,11 @@ end
 function place_piece()
 	local x = grid_cursor.x
 	local y = grid_cursor.y
-	local piece = create_random_jigsaw()
+	local piece = next_piece
+
+	if (not piece) then
+		return false
+	end
 	
 	if grid[y][x] then
 	 return false
@@ -261,8 +266,13 @@ function game_update()
 		sfx(0, 0, 0)
 	end
 	if btnp(❎, 1) then
-		next_piece = selection_row[selection_cursor]
-		sfx(1, 0, 0)
+		if (not next_piece) then
+			next_piece = selection_row[selection_cursor]
+			row_now_jigsaws()
+			sfx(1, 0, 0)
+		else
+			sfx(2, 0, 0)
+		end
 	end
 end
 
