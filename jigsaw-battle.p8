@@ -31,6 +31,33 @@ end
 
 -->8
 --grid
+grid = {}
+grid_width = 4
+grid_heigth = 4
+
+cell_size = 16
+ox = 8
+oy = 8
+
+function create_grid()
+	for y=0,grid_heigth do
+		grid[y] = {}
+		for x=0,grid_width do
+			grid[y][x] = 0
+		end
+	end
+end
+
+function draw_grid()
+	for y=0,grid_heigth do
+		for x=0,grid_width do
+			local sx = ox + x*cell_size
+			local sy = oy + y*cell_size
+			rect(sx, sy, sx+cell_size-1, sy+cell_size-1, 5)
+		end
+	end
+end			
+	
 -->8
 --scene_menu
 function menu_update()
@@ -52,8 +79,9 @@ end
 function game_init()
 		--todo set all game state
   --todo set main grid
+  create_grid()
   --todo set p1 selection row
-  grid_player = {
+  grid_cursor = {
     x = 2,
     y = 2,
   }
@@ -68,16 +96,16 @@ function game_update()
 	
 	--todo make p1, p2 exchangeable
 	if btnp(⬆️) then
-		grid_player.y = max(0, grid_player.y - 1)
+		grid_cursor.y = max(0, grid_cursor.y - 1)
 	end
 	if btnp(⬇️) then
-		grid_player.y = min(5, grid_player.y + 1)
+		grid_cursor.y = min(5, grid_cursor.y + 1)
 	end
 	if btnp(➡️) then
-	 grid_player.x = min(5, grid_player.x + 1)
+	 grid_cursor.x = min(5, grid_cursor.x + 1)
 	end
 	if btnp(⬅️) then
-	 grid_player.x = max(0, grid_player.x - 1)
+	 grid_cursor.x = max(0, grid_cursor.x - 1)
 	end
 	
 	if btnp(➡️, 1) then
@@ -91,10 +119,11 @@ end
 function game_draw()
 	cls()
 	printc("game", 20)
-	rect(30 + grid_player.x * 16, 30 + grid_player.y * 16, 46 + grid_player.x * 16, 46 + grid_player.y * 16, 2)
+	draw_grid()
+	rect(30 + grid_cursor.x * 16, 30 + grid_cursor.y * 16, 46 + grid_cursor.x * 16, 46 + grid_cursor.y * 16, 2)
  	rect(30 + selection_cursor * 16, 2, 46 + selection_cursor * 16, 18, 3)
 
-	printc(tostring(grid_player.x) .. ", " ..  tostring(grid_player.y), 70)
+	printc(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 70)
 	printc(tostring(selection_cursor), 80)
 end
 -->8
