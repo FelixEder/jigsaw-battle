@@ -73,12 +73,18 @@ function draw_grid()
 			local sy = oy + y*cell_size
 			rect(sx, sy, sx+cell_size, sy+cell_size, 5)
 
-			local jigsaw = create_random_jigsaw()
-			render_jigsaw_at(jigsaw, x, y)
+			if (grid[y][x] == 1) then
+				local jigsaw = create_random_jigsaw()
+				render_jigsaw_at(jigsaw, x, y)
+			end
 		end
 	end
 end			
 	
+	
+function place_piece()
+	grid[grid_cursor.y][grid_cursor.x] = 1
+end	
 -->8
 --scene_menu
 function menu_update()
@@ -111,7 +117,7 @@ end
 
 function game_update()
 	--todo
-	if btnp(❎) then
+	if btnp(🅾️) then
 		scene = "end"
 	end
 	
@@ -129,8 +135,8 @@ function game_update()
 	 grid_cursor.x = max(0, grid_cursor.x - 1)
 	end
 	if btnp(❎) then
-		--todo: place piece
-	end
+		place_piece()
+		end
 	
 	if btnp(➡️, 1) then
 		selection_cursor = min(2, selection_cursor + 1)
