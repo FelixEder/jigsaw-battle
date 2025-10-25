@@ -5,6 +5,8 @@ __lua__
 
 function _init()
 	scene="menu"
+	p1color = 2
+	p2color = 3
 end
 
 function _update()
@@ -308,11 +310,11 @@ function game_draw()
 	draw_next_piece()
 	draw_grid()
 	draw_row()
-	rect(grid_x_start + grid_cursor.x * 16, grid_y_start + grid_cursor.y * 16, grid_x_start + grid_cursor.x * 16 + 16, grid_y_start + grid_cursor.y * 16 + 16, 2)
-	rect(row_x_start + selection_cursor * 16 + selection_cursor * row_x_padding, row_y_start, row_x_start + selection_cursor * 16  + selection_cursor * row_x_padding + 16, row_y_start + 16, 3)
+	rect(grid_x_start + grid_cursor.x * 16, grid_y_start + grid_cursor.y * 16, grid_x_start + grid_cursor.x * 16 + 16, grid_y_start + grid_cursor.y * 16 + 16, p1color)
+	rect(row_x_start + selection_cursor * 16 + selection_cursor * row_x_padding, row_y_start, row_x_start + selection_cursor * 16  + selection_cursor * row_x_padding + 16, row_y_start + 16, p2color)
 
-	print(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 0, 0, 2)
-	print(tostring(selection_cursor), 120, 0, 3)
+	print(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 0, 0, p1color)
+	print(tostring(selection_cursor), 120, 0, p2color)
 end
 -->8
 --scene_end
