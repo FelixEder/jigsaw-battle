@@ -61,7 +61,7 @@ function create_grid()
 	for y=0,grid_heigth do
 		grid[y] = {}
 		for x=0,grid_width do
-			grid[y][x] = 0
+			grid[y][x] = nil
 		end
 	end
 end
@@ -73,7 +73,7 @@ function draw_grid()
 			local sy = oy + y*cell_size
 			rect(sx, sy, sx+cell_size, sy+cell_size, 5)
 
-			if (grid[y][x] == 1) then
+			if (grid[y][x] != nil) then
 				local jigsaw = create_random_jigsaw()
 				render_jigsaw_at(jigsaw, x, y)
 			end
@@ -83,8 +83,9 @@ end
 	
 	
 function place_piece()
-	grid[grid_cursor.y][grid_cursor.x] = 1
-end	
+	--todo check if adjacent pieces have certain 
+	grid[grid_cursor.y][grid_cursor.x] = create_random_jigsaw()
+end
 -->8
 --scene_menu
 function menu_update()
