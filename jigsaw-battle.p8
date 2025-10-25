@@ -28,7 +28,21 @@ function _draw()
 end
 -->8
 --jigsaw
+-- -1 = socket
+-- 0 = straight
+-- 1 = knob
 
+function create_random_jigsaw()
+	return {
+		top = 1
+		left = 0
+		right = -1
+		bottom = 0
+	}
+end
+	
+	
+	
 -->8
 --grid
 grid = {}
