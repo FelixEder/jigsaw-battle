@@ -237,7 +237,7 @@ function game_draw()
 	draw_grid()
 	draw_row()
 	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
-	rect(30 + selection_cursor * 16, 100, 46 + selection_cursor * 16, 116, 3)
+	rect(44 + selection_cursor * 16, 100, 60 + selection_cursor * 16, 116, 3)
 
 	print(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 0, 0, 2)
 	print(tostring(selection_cursor), 120, 0, 3)
