@@ -34,14 +34,18 @@ end
 
 function create_random_jigsaw()
 	return {
-		top = 1
-		left = 0
-		right = -1
+		top = 1,
+		left = 0,
+		right = -1,
 		bottom = 0
-	}
+		}
 end
 	
-	
+function render_jigsaw_at(jigsaw, x, y)
+			local sx = ox + x*cell_size
+			local sy = oy + y*cell_size
+			spr(0,sx,sy, 2, 2)	
+end
 	
 -->8
 --grid
@@ -68,7 +72,9 @@ function draw_grid()
 			local sx = ox + x*cell_size
 			local sy = oy + y*cell_size
 			rect(sx, sy, sx+cell_size, sy+cell_size, 5)
-		 spr(0,sx,sy, 2, 2)
+
+			local jigsaw = create_random_jigsaw()
+			render_jigsaw_at(jigsaw, x, y)
 		end
 	end
 end			
