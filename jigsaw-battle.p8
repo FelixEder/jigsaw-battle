@@ -114,14 +114,14 @@ end
 --grid
 grid = {}
 grid_width = 4
-grid_heigth = 4
+grid_height = 4
 
 cell_size = 16
 grid_x_start = 28
 grid_y_start = 8
 
 function create_grid()
-	for y=0,grid_heigth do
+	for y=0,grid_height do
 		grid[y] = {}
 		for x=0,grid_width do
 			grid[y][x] = nil
@@ -131,7 +131,7 @@ function create_grid()
 end
 
 function draw_grid()
-	for y=0,grid_heigth do
+	for y=0,grid_height do
 		for x=0,grid_width do
 			local sx = grid_x_start + x*cell_size
 			local sy = grid_y_start + y*cell_size
@@ -151,10 +151,12 @@ function place_piece()
 	local piece = next_piece
 
 	if (not piece) then
+		printh("not piece", "error")
 		return false
 	end
 	
 	if grid[y][x] then
+		printh("grid[y][x]", "error")
 	 return false
 	end
 
@@ -163,40 +165,54 @@ function place_piece()
 	if y > 0 and grid[y-1][x] then
 		local top = grid[y-1][x]
 		if (top.bottom + piece.top > 1) then
+			printh("top", "error")
 			return false
 		elseif (top.bottom != piece.top and top.bottom + piece.top == 0) then
 			socket_in_knob = true
+		else
+			printh(top.bottom..", "..piece.top, "error")
 		end
 	end
 
-	if y < grid_heigth-1 and grid[y+1][x] then
+	if y < grid_height-1 and grid[y+1][x] then
 		local bottom = grid[y+1][x]
 		if (bottom.top + piece.bottom > 1) then
+			printh("bottom", "error")
 			return false
 		elseif (bottom.top != piece.bottom and bottom.top + piece.bottom == 0) then
-	        socket_in_knob = true
+			socket_in_knob = true
+		else
+			printh(bottom.top..", "..piece.bottom, "error")
 		end
 	end
 
 	if x > 0 and grid[y][x-1] then
 		local left = grid[y][x-1]
 		if (left.right + piece.left > 1) then
+			printh("left", "error")
 			return false
-    	elseif (left.right != piece.left and left.right + piece.left == 0) then
-        	socket_in_knob = true
-    	end
+		elseif (left.right != piece.left and left.right + piece.left == 0) then
+			socket_in_knob = true
+		else
+			printh(left.right..", "..piece.left, "error")
+		end
 	end
 
 	if x < grid_width-1 and grid[y][x+1] then
 		local right = grid[y][x+1]
 		if (right.left + piece.right > 1) then
+			printh("right", "error")
 			return false
 		elseif (right.left != piece.right and right.left + piece.right == 0) then
-        	socket_in_knob = true
-    	end
+			socket_in_knob = true
+		else
+			printh(right.left..", "..piece.right, "error")
+		end
 	end
 
+
 	if (not socket_in_knob) then
+		printh("not socket_in_knob", "error")
 		return false
 	end
 
