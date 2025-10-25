@@ -245,6 +245,7 @@ function game_update()
 	if btnp(❎) then
 		local success = place_piece()
 		if (success) then
+			next_piece = nil
 			sfx(1, 0, 0)
 		else
 			sfx(2, 0, 0)
