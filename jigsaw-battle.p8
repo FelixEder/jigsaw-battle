@@ -254,12 +254,15 @@ function game_update()
 	
 	if btnp(➡️, 1) then
 		selection_cursor = min(2, selection_cursor + 1)
+		sfx(0, 0, 0)
 	end
 	if btnp(⬅️, 1) then
 	 selection_cursor = max(0, selection_cursor - 1)
+		sfx(0, 0, 0)
 	end
 	if btnp(❎, 1) then
 		next_piece = selection_row[selection_cursor]
+		sfx(1, 0, 0)
 	end
 end
 
