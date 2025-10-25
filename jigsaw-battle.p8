@@ -48,10 +48,16 @@ function create_start_piece()
 		bottom = 1,
 	}
 end
-	
-function render_jigsaw_at(jigsaw, x, y)
+
+--exact true for giving exact pixel coordinates, false or omitted for placing with grid coordinates
+function render_jigsaw_at(jigsaw, x, y, exact)
+			exact = exact or false
 			local sx = ox + x*cell_size
 			local sy = oy + y*cell_size
+			if (exact) then
+				sx = x
+				sy = y
+			end
 			
 			-- draw with all sockets
 			sspr(0, 0, 16, 16, sx, sy)
@@ -257,6 +263,7 @@ end
 
 function game_draw()
 	cls()
+	draw_next_piece()
 	draw_grid()
 	draw_row()
 	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
@@ -311,6 +318,16 @@ function draw_row()
 end
 
 
+-->8
+--next piece hud
+function draw_next_piece()
+	local x = 0
+	local y = 50
+	rect(x, y, x + 16, y + 16, 2)
+	if (next_piece) then
+		render_jigsaw_at(next_piece, x, y, true)
+	end
+end
 __gfx__
 00000000000000000099900000000000000009aa000009aa00000000000000000000000000000000000000000000000000000000000000000000000000000000
 099999000009999909aaa90000000000000009aa000009aa00000000000000000000000000000000000000000000000000000000000000000000000000000000
