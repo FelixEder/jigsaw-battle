@@ -116,47 +116,48 @@ function draw_grid()
 		end
 	end
 end			
-	
-	
+
+-- returns true on success
 function place_piece()
 	local x = grid_cursor.x
 	local y = grid_cursor.y
 	local piece = create_random_jigsaw()
 	
 	if grid[y][x] then
-	 return --exit early
+	 return false
 	end
 
 	if y > 0 and grid[y-1][x] then
 		--todo check top neighbor
 		local top = grid[y-1][x]
 		if (false) then
-			return -- exit early
+			return false
 		end
 	end
 
 	if y < grid_heigth-1 and grid[y+1][x] then
 		--todo check bottom neighbor
 		if (false) then
-			return -- exit early
+			return false
 		end
 	end
 
 	if x > 0 and grid[y][x-1] then
 		--todo check left neighbor
 		if (false) then
-			return -- exit early
+			return false
 		end
 	end
 
 	if x < grid_width-1 and grid[y][x+1] then
 		--todo check right neighbor
 		if (false) then
-			return -- exit early
+			return false
 		end
 	end
 
 	grid[y][x] = piece
+	return true
 end
 -->8
 --scene_menu
@@ -211,9 +212,13 @@ function game_update()
 		sfx(0, 0, 0)
 	end
 	if btnp(❎) then
-		sfx(1, 0, 0)
-		place_piece()
+		local success = place_piece()
+		if (success) then
+			sfx(1, 0, 0)
+		else
+			sfx(2, 0, 0)
 		end
+	end
 	
 	if btnp(➡️, 1) then
 		selection_cursor = min(2, selection_cursor + 1)
@@ -407,5 +412,6 @@ __label__
 88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
 __sfx__
-0001000003050070500c05010050150501c0501f05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0001000003010070100c01010010150101c0101f010000000000000000000000000000000000000000000000000000000000000000000000000000000002d0000000000000000000000000000000000000000000
 0003000027620266202562025620206201b620156200e620076202e4002a4002840023400154000d4000140000400006000060000600006000000000000000000000000000000000000000000000000000000000
+00010000240502005018050130500c050060500005000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
