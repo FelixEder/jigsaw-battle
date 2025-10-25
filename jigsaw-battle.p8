@@ -120,7 +120,7 @@ grid_height = 4
 
 cell_size = 16
 grid_x_start = 28
-grid_y_start = 8
+grid_y_start = 12
 
 function create_grid()
 	for y=0,grid_height do
@@ -176,7 +176,7 @@ function place_piece()
 		end
 	end
 
-	if y < grid_height-1 and grid[y+1][x] then
+	if y < grid_height and grid[y+1][x] then
 		local bottom = grid[y+1][x]
 		if (bottom.top + piece.bottom > 0) then
 			printh("bottom", "error")
@@ -200,7 +200,7 @@ function place_piece()
 		end
 	end
 
-	if x < grid_width-1 and grid[y][x+1] then
+	if x < grid_width and grid[y][x+1] then
 		local right = grid[y][x+1]
 		if (right.left + piece.right > 0) then
 			printh("right", "error")
@@ -250,7 +250,10 @@ function game_init()
     y = 2,
   }
   selection_cursor = 0
-  music(0)
+  round = 0
+  p1score = 1
+  p2score = 1
+  --music(0)
 end
 
 function game_update()
@@ -260,41 +263,49 @@ function game_update()
 	end
 	
 	--todo make p1, p2 exchangeable
-	if btnp(⬆️) then
+	if btnp(⬆️, round) then
 		grid_cursor.y = max(0, grid_cursor.y - 1)
 		sfx(0, 0, 0)
 	end
-	if btnp(⬇️) then
+	if btnp(⬇️, round) then
 		grid_cursor.y = min(4, grid_cursor.y + 1)
 		sfx(0, 0, 0)
 	end
-	if btnp(➡️) then
+	if btnp(➡️, round) then
 	 grid_cursor.x = min(4, grid_cursor.x + 1)
 		sfx(0, 0, 0)
 	end
-	if btnp(⬅️) then
+	if btnp(⬅️, round) then
 	 grid_cursor.x = max(0, grid_cursor.x - 1)
 		sfx(0, 0, 0)
 	end
-	if btnp(❎) then
+	if btnp(❎, round) then
 		local success = place_piece()
 		if (success) then
 			next_piece = nil
+			if (round == 0) then
+				p1score += 1
+				if (p1score == 25) then
+					next_round()
+				end
+			else
+				p2score += 1
+			end
 			sfx(1, 0, 0)
 		else
 			sfx(2, 0, 0)
 		end
 	end
 	
-	if btnp(➡️, 1) then
+	if btnp(➡️, 1 - round) then
 		selection_cursor = min(2, selection_cursor + 1)
 		sfx(0, 0, 0)
 	end
-	if btnp(⬅️, 1) then
+	if btnp(⬅️, 1 - round) then
 	 selection_cursor = max(0, selection_cursor - 1)
 		sfx(0, 0, 0)
 	end
-	if btnp(❎, 1) then
+	if btnp(❎, 1 - round) then
 		if (not next_piece) then
 			next_piece = selection_row[selection_cursor]
 			create_new_jigsaws()
@@ -305,6 +316,13 @@ function game_update()
 	end
 end
 
+function next_round()
+  create_grid()
+  create_row()
+  create_new_jigsaws()
+  next_piece = nil
+end
+
 function game_draw()
 	cls()
 	draw_next_piece()
@@ -313,8 +331,11 @@ function game_draw()
 	rect(grid_x_start + grid_cursor.x * 16, grid_y_start + grid_cursor.y * 16, grid_x_start + grid_cursor.x * 16 + 16, grid_y_start + grid_cursor.y * 16 + 16, p1color)
 	rect(row_x_start + selection_cursor * 16 + selection_cursor * row_x_padding, row_y_start, row_x_start + selection_cursor * 16  + selection_cursor * row_x_padding + 16, row_y_start + 16, p2color)
 
-	print(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 0, 0, p1color)
-	print(tostring(selection_cursor), 120, 0, p2color)
+	if (round == 0) then
+		printc(tostring(p1score), 0, p1color)
+	else
+		printc(tostring(p2score), 0, p2color)
+	end
 end
 -->8
 --scene_end
