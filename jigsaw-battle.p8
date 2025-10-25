@@ -164,7 +164,7 @@ function place_piece()
 
 	if y > 0 and grid[y-1][x] then
 		local top = grid[y-1][x]
-		if (top.bottom + piece.top > 1) then
+		if (top.bottom + piece.top > 0) then
 			printh("top", "error")
 			return false
 		elseif (top.bottom != piece.top and top.bottom + piece.top == 0) then
@@ -176,7 +176,7 @@ function place_piece()
 
 	if y < grid_height-1 and grid[y+1][x] then
 		local bottom = grid[y+1][x]
-		if (bottom.top + piece.bottom > 1) then
+		if (bottom.top + piece.bottom > 0) then
 			printh("bottom", "error")
 			return false
 		elseif (bottom.top != piece.bottom and bottom.top + piece.bottom == 0) then
@@ -188,7 +188,7 @@ function place_piece()
 
 	if x > 0 and grid[y][x-1] then
 		local left = grid[y][x-1]
-		if (left.right + piece.left > 1) then
+		if (left.right + piece.left > 0) then
 			printh("left", "error")
 			return false
 		elseif (left.right != piece.left and left.right + piece.left == 0) then
@@ -200,7 +200,7 @@ function place_piece()
 
 	if x < grid_width-1 and grid[y][x+1] then
 		local right = grid[y][x+1]
-		if (right.left + piece.right > 1) then
+		if (right.left + piece.right > 0) then
 			printh("right", "error")
 			return false
 		elseif (right.left != piece.right and right.left + piece.right == 0) then
