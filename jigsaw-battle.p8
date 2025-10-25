@@ -33,20 +33,11 @@ end
 -- 1 = knob
 function create_random_jigsaw()
 	return {
-		top = 1,
-		left = 0,
-		right = -1,
-		bottom = 1,
-		}
-end
-
-function create_start_piece()
-	return {
-		top = 1,
+		top = -1,
 		left = 1,
-		right = 1,
-		bottom = 1,
-	}
+		right = -1,
+		bottom = 1
+		}
 end
 	
 function render_jigsaw_at(jigsaw, x, y)
@@ -109,7 +100,6 @@ function create_grid()
 			grid[y][x] = nil
 		end
 	end
-	grid[2][2] = create_start_piece()
 end
 
 function draw_grid()
@@ -120,7 +110,8 @@ function draw_grid()
 			rect(sx, sy, sx+cell_size, sy+cell_size, 5)
 
 			if (grid[y][x] != nil) then
-				render_jigsaw_at(grid[y][x], x, y)
+				local jigsaw = create_random_jigsaw()
+				render_jigsaw_at(jigsaw, x, y)
 			end
 		end
 	end
@@ -136,46 +127,33 @@ function place_piece()
 	 return false
 	end
 
-	local socket_in_knob = false
-
 	if y > 0 and grid[y-1][x] then
+		--todo check top neighbor
 		local top = grid[y-1][x]
-		if (top.bottom + piece.top > 1) then
+		if (false) then
 			return false
-		elseif (top.bottom != piece.top and top.bottom + piece.top == 0) then
-			socket_in_knob = true
 		end
 	end
 
 	if y < grid_heigth-1 and grid[y+1][x] then
-		local bottom = grid[y+1][x]
-		if (bottom.top + piece.bottom > 1) then
+		--todo check bottom neighbor
+		if (false) then
 			return false
-		elseif (bottom.top != piece.bottom and bottom.top + piece.bottom == 0) then
-	        socket_in_knob = true
 		end
 	end
 
 	if x > 0 and grid[y][x-1] then
-		local left = grid[y][x-1]
-		if (left.right + piece.left > 1) then
+		--todo check left neighbor
+		if (false) then
 			return false
-    	elseif (left.right != piece.left and left.right + piece.left == 0) then
-        	socket_in_knob = true
-    	end
+		end
 	end
 
 	if x < grid_width-1 and grid[y][x+1] then
-		local right = grid[y][x+1]
-		if (right.left + piece.right > 1) then
+		--todo check right neighbor
+		if (false) then
 			return false
-		elseif (right.left != piece.right and right.left + piece.right == 0) then
-        	socket_in_knob = true
-    	end
-	end
-
-	if (not socket_in_knob) then
-		return false
+		end
 	end
 
 	grid[y][x] = piece
@@ -259,7 +237,7 @@ function game_draw()
 	draw_grid()
 	draw_row()
 	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
-	rect(44 + selection_cursor * 16, 100, 60 + selection_cursor * 16, 116, 3)
+	rect(44 + selection_cursor * 16, 105, 60 + selection_cursor * 16, 121, 3)
 
 	print(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 0, 0, 2)
 	print(tostring(selection_cursor), 120, 0, 3)
@@ -303,7 +281,7 @@ end
 function draw_row() 
 	for x=0,row_w-1 do
 		local sx = 44 + x*cell_size
-		local sy = 100 
+		local sy = 105 
 		rect(sx, sy, sx + cell_size,sy+cell_size,5)
 		--render_jigsaw_at(jigsaw, x, 3)
 	end
