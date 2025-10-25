@@ -31,7 +31,6 @@ end
 -- -1 = socket
 -- 0 = straight
 -- 1 = knob
-
 function create_random_jigsaw()
 	return {
 		top = 1,
@@ -106,7 +105,6 @@ end
 --scene_game
 function game_init()
 		--todo set all game state
-  --todo set main grid
   create_grid()
   --todo set p1 selection row
   grid_cursor = {
