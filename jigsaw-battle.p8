@@ -36,8 +36,8 @@ grid_width = 4
 grid_heigth = 4
 
 cell_size = 16
-ox = 8
-oy = 8
+ox = 28
+oy = 16
 
 function create_grid()
 	for y=0,grid_heigth do
@@ -53,7 +53,7 @@ function draw_grid()
 		for x=0,grid_width do
 			local sx = ox + x*cell_size
 			local sy = oy + y*cell_size
-			rect(sx, sy, sx+cell_size-1, sy+cell_size-1, 5)
+			rect(sx, sy, sx+cell_size, sy+cell_size, 5)
 		end
 	end
 end			
@@ -99,10 +99,10 @@ function game_update()
 		grid_cursor.y = max(0, grid_cursor.y - 1)
 	end
 	if btnp(⬇️) then
-		grid_cursor.y = min(5, grid_cursor.y + 1)
+		grid_cursor.y = min(4, grid_cursor.y + 1)
 	end
 	if btnp(➡️) then
-	 grid_cursor.x = min(5, grid_cursor.x + 1)
+	 grid_cursor.x = min(4, grid_cursor.x + 1)
 	end
 	if btnp(⬅️) then
 	 grid_cursor.x = max(0, grid_cursor.x - 1)
@@ -118,13 +118,12 @@ end
 
 function game_draw()
 	cls()
-	printc("game", 20)
 	draw_grid()
-	rect(30 + grid_cursor.x * 16, 30 + grid_cursor.y * 16, 46 + grid_cursor.x * 16, 46 + grid_cursor.y * 16, 2)
- 	rect(30 + selection_cursor * 16, 2, 46 + selection_cursor * 16, 18, 3)
+	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
+ 	rect(30 + selection_cursor * 16, 100, 46 + selection_cursor * 16, 116, 3)
 
-	printc(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 70)
-	printc(tostring(selection_cursor), 80)
+	print(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 0, 0, 2)
+	print(tostring(selection_cursor), 120, 0, 3)
 end
 -->8
 --scene_end
