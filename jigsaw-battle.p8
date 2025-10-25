@@ -32,13 +32,24 @@ end
 -- 0 = straight
 -- 1 = knob
 function create_random_jigsaw()
-	--todo balance the randomness
 	return {
-		top = flr(rnd(3)) - 1,
-		left = flr(rnd(3)) - 1,
-		right = flr(rnd(3)) - 1,
-		bottom = flr(rnd(3)) - 1,
-		}
+		top = weighted_random_jigsaw(),
+		left = weighted_random_jigsaw(),
+		right = weighted_random_jigsaw(),
+		bottom = weighted_random_jigsaw(),
+	}
+end
+
+
+function weighted_random_jigsaw()
+    local r = rnd(27) -- 0 <= r < 10
+    if r < 13 then
+        return -1
+    elseif r < 26 then
+        return 1
+    else
+        return 0 -- 1/27 chance of straight
+    end
 end
 
 function create_start_piece()
@@ -53,8 +64,8 @@ end
 --exact true for giving exact pixel coordinates, false or omitted for placing with grid coordinates
 function render_jigsaw_at(jigsaw, x, y, exact)
 			exact = exact or false
-			local sx = ox + x*cell_size
-			local sy = oy + y*cell_size
+			local sx = grid_x_start + x*cell_size
+			local sy = grid_y_start + y*cell_size
 			if (exact) then
 				sx = x
 				sy = y
@@ -91,12 +102,12 @@ function render_jigsaw_at(jigsaw, x, y, exact)
 					-- existing base
 					sspr(e[1], e[2], e[3], e[4], sx + offset_x, sy + offset_y)
 				end
-			end	
+			end
 			
-			draw_edge("top", 5, -4)			
-			draw_edge("bottom", 5, 13)			
-			draw_edge("left", -4, 4)			
-			draw_edge("right", 13, 4)			
+			draw_edge("top", 5, -4)
+			draw_edge("bottom", 5, 13)
+			draw_edge("left", -4, 4)
+			draw_edge("right", 13, 4)
 end
 	
 -->8
@@ -106,8 +117,8 @@ grid_width = 4
 grid_heigth = 4
 
 cell_size = 16
-ox = 28
-oy = 16
+grid_x_start = 28
+grid_y_start = 8
 
 function create_grid()
 	for y=0,grid_heigth do
@@ -122,8 +133,8 @@ end
 function draw_grid()
 	for y=0,grid_heigth do
 		for x=0,grid_width do
-			local sx = ox + x*cell_size
-			local sy = oy + y*cell_size
+			local sx = grid_x_start + x*cell_size
+			local sy = grid_y_start + y*cell_size
 			rect(sx, sy, sx+cell_size, sy+cell_size, 5)
 
 			if (grid[y][x] != nil) then
@@ -211,11 +222,10 @@ end
 -->8
 --scene_game
 function game_init()
-		--todo set all game state
+  --set all game state
   create_grid()
   create_row()
-  row_now_jigsaws()
-  --todo set p1 selection row
+  create_new_jigsaws()
   next_piece = nil
   grid_cursor = {
     x = 2,
@@ -268,7 +278,7 @@ function game_update()
 	if btnp(❎, 1) then
 		if (not next_piece) then
 			next_piece = selection_row[selection_cursor]
-			row_now_jigsaws()
+			create_new_jigsaws()
 			sfx(1, 0, 0)
 		else
 			sfx(2, 0, 0)
@@ -281,8 +291,8 @@ function game_draw()
 	draw_next_piece()
 	draw_grid()
 	draw_row()
-	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
-	rect(44 + selection_cursor * 16, 105, 60 + selection_cursor * 16, 121, 3)
+	rect(grid_x_start + grid_cursor.x * 16, grid_y_start + grid_cursor.y * 16, grid_x_start + grid_cursor.x * 16 + 16, grid_y_start + grid_cursor.y * 16 + 16, 2)
+	rect(row_x_start + selection_cursor * 16 + selection_cursor * row_x_padding, row_y_start, row_x_start + selection_cursor * 16  + selection_cursor * row_x_padding + 16, row_y_start + 16, 3)
 
 	print(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 0, 0, 2)
 	print(tostring(selection_cursor), 120, 0, 3)
@@ -316,6 +326,9 @@ end
 row_w = 3
 
 selection_row = {}
+row_x_padding = 16
+row_x_start = 28
+row_y_start = 105
 
 function create_row() 
 	for x=0,row_w-1 do
@@ -323,21 +336,18 @@ function create_row()
 	end
 end
 
-function draw_row() 
+function draw_row()
 	for x=0,row_w-1 do
-		local sx = 44 + x*cell_size
-		local sy = 105
+		local sx = row_x_start + x*cell_size + x*row_x_padding
+		local sy = row_y_start
 		rect(sx, sy, sx + cell_size,sy+cell_size,5)
-		render_jigsaw_at(selection_row[x], 44 + x*cell_size, 105, true)
+		render_jigsaw_at(selection_row[x], row_x_start + x*cell_size + x*row_x_padding, row_y_start, true)
 	end
 end
 
-function row_now_jigsaws()
+function create_new_jigsaws()
 	for x=0,row_w-1 do
-		local sx = 44 + x*cell_size
-		local sy = 105
-		local jigsaw = create_random_jigsaw()
-		selection_row[x] = jigsaw		
+		selection_row[x] = create_random_jigsaw()		
 	end
 end
 		
@@ -346,8 +356,8 @@ end
 -->8
 --next piece hud
 function draw_next_piece()
-	local x = 0
-	local y = 50
+	local x = 4
+	local y = grid_y_start + 32
 	rect(x, y, x + 16, y + 16, 2)
 	if (next_piece) then
 		render_jigsaw_at(next_piece, x, y, true)
