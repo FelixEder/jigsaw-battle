@@ -42,7 +42,10 @@ end
 
 function menu_draw()
 	cls()
-	printc("press ❎ to play", 50)
+	printc("jigsaw battle", 20, 8)
+	if (flr(time() % 3) < 2) then
+		printc("press ❎ to play", 100)
+	end
 end
 -->8
 --scene_game
