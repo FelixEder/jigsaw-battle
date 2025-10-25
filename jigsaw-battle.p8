@@ -108,6 +108,9 @@ function game_update()
 	if btnp(⬅️) then
 	 grid_cursor.x = max(0, grid_cursor.x - 1)
 	end
+	if btnp(❎) then
+		--todo: place piece
+	end
 	
 	if btnp(➡️, 1) then
 		selection_cursor = min(2, selection_cursor + 1)
@@ -115,13 +118,16 @@ function game_update()
 	if btnp(⬅️, 1) then
 	 selection_cursor = max(0, selection_cursor - 1)
 	end
+	if btnp(❎, 1) then
+		--todo: select piece for p1
+	end
 end
 
 function game_draw()
 	cls()
 	draw_grid()
 	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
- 	rect(30 + selection_cursor * 16, 100, 46 + selection_cursor * 16, 116, 3)
+	rect(30 + selection_cursor * 16, 100, 46 + selection_cursor * 16, 116, 3)
 
 	print(tostring(grid_cursor.x) .. ", " ..  tostring(grid_cursor.y), 0, 0, 2)
 	print(tostring(selection_cursor), 120, 0, 3)
