@@ -209,6 +209,7 @@ function game_init()
 		--todo set all game state
   create_grid()
   create_row()
+  row_now_jigsaws()
   --todo set p1 selection row
   next_piece = nil
   grid_cursor = {
@@ -257,7 +258,7 @@ function game_update()
 	 selection_cursor = max(0, selection_cursor - 1)
 	end
 	if btnp(❎, 1) then
-		--todo: select piece for p1
+		next_piece = selection_row[selection_cursor]
 	end
 end
 
@@ -266,7 +267,6 @@ function game_draw()
 	draw_next_piece()
 	draw_grid()
 	draw_row()
-	row_now_jigsaws()
 	rect(28 + grid_cursor.x * 16, 16 + grid_cursor.y * 16, 44 + grid_cursor.x * 16, 32 + grid_cursor.y * 16, 2)
 	rect(44 + selection_cursor * 16, 105, 60 + selection_cursor * 16, 121, 3)
 
@@ -298,7 +298,7 @@ function printc(txt, y, c)
 	print(txt, 64 - #txt*2, y, c)
 end
 -->8
---selection row
+--selection 
 row_w = 3
 
 selection_row = {}
@@ -314,7 +314,8 @@ function draw_row()
 		local sx = 44 + x*cell_size
 		local sy = 105
 		rect(sx, sy, sx + cell_size,sy+cell_size,5)
-		end
+		render_jigsaw_at(selection_row[x], 44 + x*cell_size, 105, true)
+	end
 end
 
 function row_now_jigsaws()
@@ -322,8 +323,7 @@ function row_now_jigsaws()
 		local sx = 44 + x*cell_size
 		local sy = 105
 		local jigsaw = create_random_jigsaw()
-		
-		render_jigsaw_at(jigsaw, 44 + x*cell_size, 105, true)
+		selection_row[x] = jigsaw		
 	end
 end
 		
