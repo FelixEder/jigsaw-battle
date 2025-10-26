@@ -239,8 +239,8 @@ function menu_draw()
 end
 -->8
 --scene_game
-time_to_place = 45
-time_to_select = 15
+time_to_place = 30
+time_to_select = 20
 function game_init()
   --set all game state
   create_grid()
@@ -369,9 +369,9 @@ function game_draw()
 	rect(row_x_start + selection_cursor * 16 + selection_cursor * row_x_padding, row_y_start, row_x_start + selection_cursor * 16  + selection_cursor * row_x_padding + 16, row_y_start + 16, select_color)
 
 	if (round == 0) then
-		printc(tostring(p1score), 0, p1color)
+		printc(tostring(p1score), 1, p1color)
 	else
-		printc(tostring(p2score), 0, p2color)
+		printc(tostring(p2score), 1, p2color)
 	end
 	draw_time_left()
 end
@@ -381,13 +381,13 @@ function draw_time_left()
 	if next_piece and time_last_selected < 30000 and time_last_placed < 30000 then
 		local time_left = max(time_to_place - (now - time_last_selected), time_to_place - (now - time_last_placed))
 		local grid_color = (round == 0) and p1color or p2color
-		print("time: " .. tostring(flr(time_left)), 0, 0, grid_color)
+		print("time: " .. tostring(flr(time_left)), 0, 1, grid_color)
 	end
 
 	if not next_piece and time_last_selected < 30000 and time_last_placed < 30000 then
 		local time_left = max(time_to_select - (now - time_last_selected), time_to_select - (now - time_last_placed))
 		local select_color = (round == 0) and p2color or p1color
-		print("time: " .. tostring(flr(time_left)), 0, 0, select_color)
+		print("time: " .. tostring(flr(time_left)), 0, 1, select_color)
 	end
 end
 -->8
