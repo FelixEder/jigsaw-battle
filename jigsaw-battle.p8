@@ -292,7 +292,7 @@ function game_update()
 				p2score += 1
 				if (p2score == 25) then
 					--todo delay a little bit
-					scene = "end"
+					end_game()
 				end
 			end
 			sfx(1, 0, 0)
@@ -332,12 +332,11 @@ function check_time_ran_out()
 		sfx(1, 0, 0)
 	end
 
-	if next_piece and now - time_last_selected > time_to_place and now - time_last_placed > time_to_place then
-		--fail
+	if next_piece and now - time_last_selected > time_to_place then
 		if (round == 0) then
 		 next_round()
 		else
-		 scene = "end"
+		 end_game()
 		end
 	end
 end
@@ -372,8 +371,8 @@ end
 
 function draw_time_left()
 	local now = time()
-	if next_piece and time_last_selected < 30000 and time_last_placed < 30000 then
-		local time_left = max(time_to_place - (now - time_last_selected), time_to_place - (now - time_last_placed))
+	if next_piece and time_last_selected < 30000 then
+		local time_left = time_to_place - (now - time_last_selected)
 		local grid_color = (round == 0) and p1color or p2color
 		print("time: " .. tostring(flr(time_left)), 0, 1, grid_color)
 	end
@@ -386,8 +385,13 @@ function draw_time_left()
 end
 -->8
 --scene_end
+function end_game()
+	end_time = time()
+	scene = "end"
+end
+
 function end_update()
-	if btnp(❎) then
+	if btnp(❎) and time() - 5 > end_time then
 		scene = "menu"
 	end
 end
@@ -398,7 +402,17 @@ function end_draw()
   
   printc("player 1: "..tostring(p1score), 20, p1color)
   printc("player 2: "..tostring(p2score), 30, p2color)
-  printc("press ❎ to play again", 80)
+  if (p1score > p2score) then
+    printc("player 1 wins!!!!!", 50, p1color)
+  elseif (p1score < p2score) then
+    printc("player 2 wins!!!!!", 50, p2color)
+  else
+    printc("it's a draw", 50)
+  end
+
+  if time() - 5 > end_time and (flr(time() % 3) < 2) then
+  	printc("press ❎ to play again", 100)
+  end
 end
 -->8
 --util
