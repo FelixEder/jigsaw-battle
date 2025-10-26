@@ -253,6 +253,8 @@ function game_init()
   round = 0
   p1score = 1
   p2score = 1
+  time_last_placed = 30_000
+  time_last_selected = 30_000
   --music(0)
 end
 
@@ -282,14 +284,20 @@ function game_update()
 	if btnp(❎, round) then
 		local success = place_piece()
 		if (success) then
+			time_last_placed = time()
 			next_piece = nil
 			if (round == 0) then
 				p1score += 1
 				if (p1score == 25) then
+					--todo delay a little bit
 					next_round()
 				end
 			else
 				p2score += 1
+				if (p2score == 25) then
+					--todo delay a little bit
+					scene = "end"
+				end
 			end
 			sfx(1, 0, 0)
 		else
@@ -309,6 +317,7 @@ function game_update()
 		if (not next_piece) then
 			next_piece = selection_row[selection_cursor]
 			create_new_jigsaws()
+			time_last_selected = time()
 			sfx(1, 0, 0)
 		else
 			sfx(2, 0, 0)
@@ -321,6 +330,8 @@ function next_round()
   create_row()
   create_new_jigsaws()
   next_piece = nil
+  time_last_placed = 30_000
+  time_last_selected = 30_000
 end
 
 function game_draw()
