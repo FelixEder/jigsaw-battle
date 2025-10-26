@@ -253,8 +253,8 @@ function game_init()
   round = 0
   p1score = 1
   p2score = 1
-  time_last_placed = 30_000
-  time_last_selected = 30_000
+  time_last_placed = 30000
+  time_last_selected = 30000
   --music(0)
 end
 
@@ -323,6 +323,27 @@ function game_update()
 			sfx(2, 0, 0)
 		end
 	end
+	check_time_ran_out()
+end
+
+function check_time_ran_out()
+	local now = time()
+	print(tostring(now), 10, 10, 2)
+	if not next_piece and now - time_last_selected > 5 and now - time_last_placed > 5 then
+		next_piece = selection_row[selection_cursor]
+		create_new_jigsaws()
+		time_last_selected = time()
+		sfx(1, 0, 0)
+	end
+
+	if next_piece and now - time_last_selected > 30 and now - time_last_placed > 30 then
+		--fail
+		if (round == 0) then
+		 next_round()
+		else
+		 scene = "end"
+		end
+	end
 end
 
 function next_round()
@@ -330,8 +351,9 @@ function next_round()
   create_row()
   create_new_jigsaws()
   next_piece = nil
-  time_last_placed = 30_000
-  time_last_selected = 30_000
+  time_last_placed = 30000
+  time_last_selected = 30000
+  round += 1
 end
 
 function game_draw()
@@ -360,7 +382,9 @@ end
 
 function end_draw()
   cls()
-  printc("end screen", 20)
+  
+  printc("player 1: "..tostring(p1score), 20, p1color)
+  printc("player 2: "..tostring(p2score), 30, p2color)
   printc("press ❎ to play again", 80)
 end
 -->8
