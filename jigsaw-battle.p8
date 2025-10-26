@@ -239,6 +239,8 @@ function menu_draw()
 end
 -->8
 --scene_game
+time_to_place = 15
+time_to_select = 5
 function game_init()
   --set all game state
   create_grid()
@@ -329,14 +331,14 @@ end
 function check_time_ran_out()
 	local now = time()
 	print(tostring(now), 10, 10, 2)
-	if not next_piece and now - time_last_selected > 5 and now - time_last_placed > 5 then
+	if not next_piece and now - time_last_selected > time_to_select and now - time_last_placed > time_to_select then
 		next_piece = selection_row[selection_cursor]
 		create_new_jigsaws()
 		time_last_selected = time()
 		sfx(1, 0, 0)
 	end
 
-	if next_piece and now - time_last_selected > 30 and now - time_last_placed > 30 then
+	if next_piece and now - time_last_selected > time_to_place and now - time_last_placed > time_to_place then
 		--fail
 		if (round == 0) then
 		 next_round()
@@ -361,8 +363,10 @@ function game_draw()
 	draw_next_piece()
 	draw_grid()
 	draw_row()
-	rect(grid_x_start + grid_cursor.x * 16, grid_y_start + grid_cursor.y * 16, grid_x_start + grid_cursor.x * 16 + 16, grid_y_start + grid_cursor.y * 16 + 16, p1color)
-	rect(row_x_start + selection_cursor * 16 + selection_cursor * row_x_padding, row_y_start, row_x_start + selection_cursor * 16  + selection_cursor * row_x_padding + 16, row_y_start + 16, p2color)
+	local grid_color = (round == 0) and p1color or p2color
+	local select_color = (round == 1) and p1color or p2color
+	rect(grid_x_start + grid_cursor.x * 16, grid_y_start + grid_cursor.y * 16, grid_x_start + grid_cursor.x * 16 + 16, grid_y_start + grid_cursor.y * 16 + 16, grid_color)
+	rect(row_x_start + selection_cursor * 16 + selection_cursor * row_x_padding, row_y_start, row_x_start + selection_cursor * 16  + selection_cursor * row_x_padding + 16, row_y_start + 16, select_color)
 
 	if (round == 0) then
 		printc(tostring(p1score), 0, p1color)
@@ -433,7 +437,8 @@ end
 function draw_next_piece()
 	local x = 4
 	local y = grid_y_start + 32
-	rect(x, y, x + 16, y + 16, 2)
+	local color = (round == 0) and p1color or p2color
+	rect(x, y, x + 16, y + 16, color)
 	if (next_piece) then
 		render_jigsaw_at(next_piece, x, y, true)
 	end
