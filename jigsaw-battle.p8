@@ -261,12 +261,6 @@ function game_init()
 end
 
 function game_update()
-	--todo
-	if btnp(🅾️) then
-		scene = "end"
-	end
-	
-	--todo make p1, p2 exchangeable
 	if btnp(⬆️, round) then
 		grid_cursor.y = max(0, grid_cursor.y - 1)
 		sfx(0, 0, 0)
@@ -396,7 +390,6 @@ function end_update()
 	if btnp(❎) then
 		scene = "menu"
 	end
-	--todo
 end
 
 
