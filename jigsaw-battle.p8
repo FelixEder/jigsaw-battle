@@ -236,7 +236,27 @@ function menu_draw()
 	if (flr(time() % 3) < 2) then
 		printc("press ❎ to play", 100)
 	end
+	draw_menu_sprite()
 end
+
+menu_sprite_timer = 0
+jigsaw = create_random_jigsaw()
+
+function draw_menu_sprite()
+  -- update jigsaw every 10 frames
+  if menu_sprite_timer == 15 then
+    jigsaw = create_random_jigsaw()
+    menu_sprite_timer = 0
+  else
+    menu_sprite_timer += 1
+  end
+  
+  -- draw the current jigsaw every frame
+  if jigsaw then
+    render_jigsaw_at(jigsaw, 56, 53, true)
+  end
+end
+
 -->8
 --scene_game
 time_to_place = 30
